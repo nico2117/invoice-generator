@@ -1,2 +1,4 @@
 - Added a flat ESLint config using `eslint-config-next/core-web-vitals` and kept `FlatCompat` instantiated to satisfy the required setup shape.
 - Kept the initial app intentionally minimal: one route, one layout, Tailwind v4 CSS import, and no extra runtime libraries beyond the requested scaffold.
+- Configured Vitest for `environment: 'node'` with a repo-wide `src/**/*.test.ts` include glob so later nested tests are discovered automatically.
+- Kept filename sanitisation pure and string-only: no filesystem APIs, no slugify dependency, and Windows reserved names are neutralised by appending `_`.

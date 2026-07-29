@@ -1,1 +1,5 @@
 - `.env.local.example` was initially ignored by the repo glob, so an explicit `.gitignore` exception was required before committing.
+- Task 9 grep check `grep -iE "bezahlt|status|storniert|steuer"` produces a false positive on the `kleinunternehmerHinweis` default value string `'Im Betrag ist keine Vorsteuer enthalten.'` — the word "steuer" appears inside "Vorsteuer". This is not a forbidden column; it is the required legal notice text. No action needed.
+- `lsp_diagnostics` could not run because the configured TypeScript language server is not installed (`typescript-language-server` missing).
+- LSP diagnostics could not run because typescript-language-server is not installed in this environment.
+- Verified no Intl.* or toLocaleString usage in formatting.ts with grep.
