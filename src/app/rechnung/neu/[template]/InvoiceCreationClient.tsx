@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { SchemaForm } from '@/components/form/SchemaForm'
 import type { FormValues } from '@/components/form/types'
@@ -73,7 +74,7 @@ export function InvoiceCreationClient({ schema, initialValues, contactId, initia
   return (
     <div className="max-w-3xl mx-auto p-6">
       <div className="mb-6">
-        <a href="/rechnung/neu" className="text-sm text-blue-600 hover:underline">← Vorlage wechseln</a>
+        <Link href="/rechnung/neu" className="text-sm text-blue-600 hover:underline">← Vorlage wechseln</Link>
         <h1 className="text-2xl font-bold mt-2">Neue Rechnung erstellen</h1>
       </div>
 

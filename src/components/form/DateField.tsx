@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import type { FormFieldProps } from './types'
 
 interface Props extends FormFieldProps {
@@ -12,10 +12,6 @@ interface Props extends FormFieldProps {
 export function DateField({ name, label, required, error: externalError, help, value, onChange, placeholder }: Props) {
   const [localValue, setLocalValue] = useState(value ?? '')
   const [internalError, setInternalError] = useState<string | null>(null)
-
-  useEffect(() => {
-    setLocalValue(value ?? '')
-  }, [value])
 
   const validate = (val: string) => {
     if (!val && !required) {

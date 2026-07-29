@@ -15,15 +15,13 @@ export function ContactRefField({ name, label, required, error, help, onSelect }
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
-    if (!query.trim()) {
-      setResults([])
-      setIsOpen(false)
-      return
-    }
-
     if (timeoutRef.current) clearTimeout(timeoutRef.current)
 
     timeoutRef.current = setTimeout(async () => {
+      if (!query.trim()) {
+        return
+      }
+
       setIsLoading(true)
       try {
         const res = await fetch(`/api/contacts?q=${encodeURIComponent(query)}`)
@@ -60,7 +58,14 @@ export function ContactRefField({ name, label, required, error, help, onSelect }
         id={name}
         type="text"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => {
+          const nextValue = e.target.value
+          setQuery(nextValue)
+          if (!nextValue.trim()) {
+            setResults([])
+            setIsOpen(false)
+          }
+        }}
         onFocus={() => { if (results.length > 0) setIsOpen(true) }}
         placeholder="Kontakt suchen..."
         className={`px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${

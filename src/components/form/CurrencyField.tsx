@@ -17,11 +17,14 @@ export function CurrencyField({ name, label, required, error: externalError, hel
   useEffect(() => {
     if (value !== undefined && value !== null) {
       if (typeof value === 'number') {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setLocalValue(formatCurrency(value))
       } else {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setLocalValue(String(value))
       }
     } else {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLocalValue('')
     }
   }, [value])

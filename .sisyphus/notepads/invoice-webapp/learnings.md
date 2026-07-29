@@ -22,3 +22,21 @@ px tsx, delete after
 ### Git note
 - Parallel wave (Task 17 contact queries) committed our freie-rechnung files in its own commit
 - Incremental tsc ("incremental": true) can show stale errors; re-run to confirm
+
+## Task 23 — Invoice creation flow (Wave 5)
+
+- Preview route must call the shared render path but never `allocateNumber()` or `storePdf()`.
+- Creation route uses `generateInvoice()`: render PDF, upload blob, then transactionally allocate number + insert invoice row.
+- `SchemaForm` now supports injectable action buttons plus `onValuesChange` so the invoice page can track whether `rechnungsnummer` was edited before sending an override.
+- Importing `renderPdf()` from an app route made Turbopack resolve the unused `fontsDir` URL; removing the dead constant fixed production bundling.
+
+- Note: Next.js evaluates db client initialization at build time even for force-dynamic routes, so DATABASE_URL is required to pass the build step.
+
+Task 26: CSV import flow implemented in `src/app/import/page.tsx` with client-side preview validation, 50-row cap, and ZIP download handoff. Added `/api/import/sample` for semicolon sample CSVs and `/api/import/generate` using `renderPdfBatch` + in-memory JSZip with per-row store/DB failures captured instead of aborting the whole batch. LSP diagnostics could not run because `typescript-language-server` is not installed; `npm run build` passed.
+Lint cleanup:
+- Replaced remaining <a> navigational links with next/link <Link> in archiving, error, not-found, and invoice creation pages.
+- Resolved react-hooks/set-state-in-effect issues by moving query-empty handling out of ContactRefField's effect body and suppressing the controlled value sync in CurrencyField where the effect is intentionally syncing prop state.
+Verification:
+- npm run lint: 0 errors, warnings only
+- npm run build: passed
+- npm test: 115/115 passed

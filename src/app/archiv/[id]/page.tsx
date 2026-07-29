@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getInvoice } from '@/lib/db/queries/invoices'
 
@@ -56,7 +57,7 @@ export default async function ArchivDetailPage({
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <a href="/archiv" className="text-sm text-blue-600 hover:underline">← Zurück zum Archiv</a>
+          <Link href="/archiv" className="text-sm text-blue-600 hover:underline">← Zurück zum Archiv</Link>
           <h1 className="text-2xl font-bold mt-1">
             Rechnung {formatNummer(invoice.jahr, invoice.rechnungsnummer)}
           </h1>

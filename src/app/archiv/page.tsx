@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { listInvoices, listYears, countInvoices } from '@/lib/db/queries/invoices'
 
 const PAGE_SIZE = 20
@@ -87,12 +88,12 @@ export default async function ArchivPage({
           Suchen
         </button>
         {(q || jahr) && (
-          <a
+          <Link
             href="/archiv"
             className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
           >
             Zurücksetzen
-          </a>
+          </Link>
         )}
       </form>
 
