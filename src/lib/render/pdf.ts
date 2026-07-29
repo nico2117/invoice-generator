@@ -1,6 +1,5 @@
 import puppeteerCore, { type Browser, type Page } from 'puppeteer-core'
 
-const fontsDir = new URL('../../assets/fonts', import.meta.url).pathname
 const setContentOptions = { waitUntil: 'networkidle0' } as unknown as Parameters<Page['setContent']>[1]
 
 /**

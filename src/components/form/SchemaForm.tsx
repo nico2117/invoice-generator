@@ -17,14 +17,20 @@ interface Props {
   schema: TemplateSchema
   initialValues?: FormValues
   onSubmit: (values: FormValues) => void
+  onValuesChange?: (values: FormValues, changedField: string) => void
+  actions?: React.ReactNode
 }
 
-export function SchemaForm({ schema, initialValues = {}, onSubmit }: Props) {
+export function SchemaForm({ schema, initialValues = {}, onSubmit, onValuesChange, actions }: Props) {
   const [values, setValues] = useState<FormValues>(initialValues)
   const [errors, setErrors] = useState<FormErrors>({})
 
   const handleChange = (name: string, value: unknown) => {
-    setValues((prev) => ({ ...prev, [name]: value }))
+    setValues((prev) => {
+      const next = { ...prev, [name]: value }
+      onValuesChange?.(next, name)
+      return next
+    })
     if (errors[name]) {
       setErrors((prev) => {
         const next = { ...prev }
@@ -41,6 +47,7 @@ export function SchemaForm({ schema, initialValues = {}, onSubmit }: Props) {
       if (val) newValues[key] = val
     }
     setValues(newValues)
+    onValuesChange?.(newValues, 'contact')
   }
 
   const validate = (): boolean => {
@@ -222,14 +229,16 @@ export function SchemaForm({ schema, initialValues = {}, onSubmit }: Props) {
         {schema.fields.map(renderField)}
       </div>
 
-      <div className="pt-4 border-t border-gray-200">
-        <button
-          type="submit"
-          className="w-full sm:w-auto px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md shadow-sm transition-colors"
-        >
-          Absenden
-        </button>
-      </div>
+      {actions ?? (
+        <div className="pt-4 border-t border-gray-200">
+          <button
+            type="submit"
+            className="w-full sm:w-auto px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md shadow-sm transition-colors"
+          >
+            Absenden
+          </button>
+        </div>
+      )}
     </form>
   )
 }
