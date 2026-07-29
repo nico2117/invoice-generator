@@ -3,3 +3,4 @@
 - `lsp_diagnostics` could not run because the configured TypeScript language server is not installed (`typescript-language-server` missing).
 - LSP diagnostics could not run because typescript-language-server is not installed in this environment.
 - Verified no Intl.* or toLocaleString usage in formatting.ts with grep.
+- `lsp_diagnostics` on the storage folder also failed for the same reason: the TypeScript language server is not installed here, so typecheck via `npx tsc --noEmit` was used as the fallback verifier.

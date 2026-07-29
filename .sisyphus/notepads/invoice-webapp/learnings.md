@@ -11,3 +11,5 @@
 - Added pure filename helpers in src/lib/core/filename.ts for ASCII-safe invoice names.
 - TDD flow: filename.test.ts written first, initial run failed on missing module, then implementation made all 22 tests pass.
 - Sanitisation order matters: umlaut transliteration must happen before non-ASCII stripping to preserve ae/oe/ue.
+- Supabase storage helpers should use `randomUUID()` from `crypto` for collision-proof object keys; keep PDF hashes computed from the original buffer before upload.
+- `deleteBlob` can be compile-time restricted to `'logos'` only, which cleanly enforces immutable invoice blobs in TypeScript.
