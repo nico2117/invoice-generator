@@ -1,15 +1,2 @@
-- Next.js 16 scaffold works with `eslint-config-next/core-web-vitals` directly in flat config; wrapping `next/core-web-vitals` via `FlatCompat` caused a circular config error.
-- `npm install` on the fresh scaffold produced peer-dependency warnings only; build, typecheck, and lint passed.
-- Vitest discovers `src/**/*.test.ts` correctly from the repo root, including nested paths like `src/lib/render/probe.test.ts`.
-- The `@` alias resolves in Vitest when mirrored from `tsconfig.json` with `path.resolve(__dirname, './src')`.
-- drizzle-kit generate works without a real DB — it only reads the schema file; DIRECT_URL can be any dummy value at generation time.
-- `prepare: false` is MANDATORY for Supavisor transaction-mode pooling (port 6543); omit it and you get intermittent "prepared statement does not exist" in production that never appears locally.
-- drizzle-kit `check` table constraint uses `(table) => [check('name', sql`...`)]` array syntax (not `()=>({...})` object syntax) in drizzle-orm v0.36+.
-- Added pure German formatting helpers in src/lib/core/formatting.ts with ParseError.
-- TDD flow completed: formatting.test.ts written first, initial run failed due to missing module, then implementation made tests pass.
-- formatCurrency/manual grouping, parseGermanNumber, formatDate, parseGermanDate, deriveAnredeGruss, and formatIban now covered.
-- Added pure filename helpers in src/lib/core/filename.ts for ASCII-safe invoice names.
-- TDD flow: filename.test.ts written first, initial run failed on missing module, then implementation made all 22 tests pass.
-- Sanitisation order matters: umlaut transliteration must happen before non-ASCII stripping to preserve ae/oe/ue.
-- Supabase storage helpers should use `randomUUID()` from `crypto` for collision-proof object keys; keep PDF hashes computed from the original buffer before upload.
-- `deleteBlob` can be compile-time restricted to `'logos'` only, which cleanly enforces immutable invoice blobs in TypeScript.
+- Created a single-row Drizzle settings query module with id=1 seeding and a plain snapshot contract for template placeholders.
+- Vitest coverage confirms every SETTINGS_PLACEHOLDER_KEY path resolves against the snapshot shape.
