@@ -9,6 +9,7 @@ import { getContact } from '@/lib/db/queries/contacts'
 import { formatCurrency, formatDate } from '@/lib/core/formatting'
 import { InvoiceCreationClient } from './InvoiceCreationClient'
 import type { FormValues } from '@/components/form/types'
+import Link from 'next/link'
 
 interface Props {
   params: Promise<{ template: string }>
@@ -20,7 +21,13 @@ export default async function RechnungTemplatePage({ params, searchParams }: Pro
   const schema = getTemplate(template)
   if (!schema) notFound()
 
-  await assertSettingsComplete()
+  // Check settings but show a banner instead of throwing
+  let settingsWarning: string | null = null
+  try {
+    await assertSettingsComplete()
+  } catch (e) {
+    settingsWarning = (e as Error).message
+  }
 
   const resolvedSearchParams = await searchParams
   const kontaktParam = resolvedSearchParams.kontakt
@@ -57,11 +64,24 @@ export default async function RechnungTemplatePage({ params, searchParams }: Pro
   }
 
   return (
-    <InvoiceCreationClient
-      schema={schema}
-      initialValues={initialValues}
-      contactId={contact?.id ?? null}
-      initialRechnungsnummer={nextNumber}
-    />
+    <div>
+      {settingsWarning && (
+        <div className="mb-4 rounded border border-yellow-400 bg-yellow-50 p-4 text-yellow-900">
+          <strong>Vereinsdaten unvollständig:</strong> {settingsWarning.replace('Vereinsdaten unvollständig: ', '')}{' '}
+          Bitte zuerst die{' '}
+          <Link href="/einstellungen" className="underline font-semibold">
+            Vereinsdaten
+          </Link>{' '}
+          ausfüllen, bevor Sie eine Rechnung erstellen.
+        </div>
+      )}
+      <InvoiceCreationClient
+        schema={schema}
+        initialValues={initialValues}
+        contactId={contact?.id ?? null}
+        initialRechnungsnummer={nextNumber}
+        settingsComplete={!settingsWarning}
+      />
+    </div>
   )
 }

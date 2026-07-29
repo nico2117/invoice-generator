@@ -12,6 +12,7 @@ interface Props {
   initialValues: FormValues
   contactId: string | null
   initialRechnungsnummer: number
+  settingsComplete?: boolean
 }
 
 type SubmitMode = 'preview' | 'create'
