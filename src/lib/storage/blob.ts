@@ -105,6 +105,17 @@ export async function fetchPdf(objectPath: string): Promise<Buffer> {
 }
 
 /**
+ * Fetch a logo by its object path from the logos bucket.
+ */
+export async function fetchLogo(objectPath: string): Promise<Buffer> {
+  const supabase = getSupabaseClient()
+  const { data, error } = await supabase.storage.from(LOGO_BUCKET).download(objectPath)
+  if (error || !data) throw new StorageError(`Failed to fetch logo at ${objectPath}: ${error?.message}`)
+  const arrayBuf = await data.arrayBuffer()
+  return Buffer.from(arrayBuf)
+}
+
+/**
  * Get a short-lived signed URL for inline display (PDF viewer / logo preview).
  */
 export async function getSignedUrl(

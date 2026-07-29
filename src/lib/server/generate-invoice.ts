@@ -12,7 +12,7 @@ import { assertSettingsComplete, getSettings, getSettingsSnapshot } from '@/lib/
 import { invoices } from '@/lib/db/schema'
 import { buildDocumentHtml } from '@/lib/render/html'
 import { renderPdf } from '@/lib/render/pdf'
-import { fetchPdf, storePdf } from '@/lib/storage/blob'
+import { fetchLogo, storePdf } from '@/lib/storage/blob'
 import type { TemplateSchema } from '@/lib/templates/types'
 
 interface GenerateInvoiceOptions {
@@ -142,7 +142,7 @@ async function loadLogoDataUri(logoBlobUrl: string | null): Promise<string | nul
   if (!logoBlobUrl) return null
 
   try {
-    const logoBytes = await fetchPdf(logoBlobUrl)
+    const logoBytes = await fetchLogo(logoBlobUrl)
     const contentType = logoBlobUrl.toLowerCase().endsWith('.png') ? 'image/png' : 'image/jpeg'
     return `data:${contentType};base64,${logoBytes.toString('base64')}`
   } catch {
