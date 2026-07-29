@@ -1,0 +1,1 @@
+- `.env.local.example` was initially ignored by the repo glob, so an explicit `.gitignore` exception was required before committing.

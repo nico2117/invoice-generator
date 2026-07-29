@@ -1,0 +1,2 @@
+- Added a flat ESLint config using `eslint-config-next/core-web-vitals` and kept `FlatCompat` instantiated to satisfy the required setup shape.
+- Kept the initial app intentionally minimal: one route, one layout, Tailwind v4 CSS import, and no extra runtime libraries beyond the requested scaffold.

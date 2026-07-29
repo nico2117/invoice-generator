@@ -1,0 +1,48 @@
+{
+  "name": "invoice-generator",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:cov": "vitest run --coverage",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "storage:setup": "tsx src/lib/storage/ensure-buckets.ts"
+  },
+  "dependencies": {
+    "next": "^16.2.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "drizzle-orm": "^0.41.0",
+    "postgres": "^3.4.5",
+    "@supabase/supabase-js": "^2.49.4",
+    "marked": "^15.0.12",
+    "csv-parse": "^5.6.0",
+    "jszip": "^3.10.1",
+    "jose": "^5.10.0",
+    "puppeteer-core": "24.43.1",
+    "@sparticuz/chromium": "149.0.0",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "^16.2.3",
+    "@eslint/eslintrc": "^3.3.1",
+    "tailwindcss": "^4.1.0",
+    "@tailwindcss/postcss": "^4.1.0",
+    "@tailwindcss/typography": "^0.5.15",
+    "drizzle-kit": "^0.30.0",
+    "vitest": "^3.0.0",
+    "@vitest/coverage-v8": "^3.0.0",
+    "tsx": "^4.19.3"
+  }
+}

@@ -1,0 +1,2 @@
+- Next.js 16 scaffold works with `eslint-config-next/core-web-vitals` directly in flat config; wrapping `next/core-web-vitals` via `FlatCompat` caused a circular config error.
+- `npm install` on the fresh scaffold produced peer-dependency warnings only; build, typecheck, and lint passed.
