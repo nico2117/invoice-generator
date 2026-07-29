@@ -68,7 +68,7 @@ export async function renderPdf(html: string): Promise<Buffer> {
       const pdfBuffer = await page.pdf({
         format: 'A4',
         printBackground: true,
-        margin: { top: '15mm', bottom: '15mm', left: '20mm', right: '20mm' },
+        margin: { top: '0', bottom: '0', left: '0', right: '0' },
       })
       return Buffer.from(pdfBuffer)
     } finally {
@@ -96,7 +96,7 @@ export async function renderPdfBatch(htmls: string[]): Promise<Buffer[]> {
         const pdfBuffer = await page.pdf({
           format: 'A4',
           printBackground: true,
-          margin: { top: '15mm', bottom: '15mm', left: '20mm', right: '20mm' },
+          margin: { top: '0', bottom: '0', left: '0', right: '0' },
         })
         results.push(Buffer.from(pdfBuffer))
       } finally {

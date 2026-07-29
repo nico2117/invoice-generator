@@ -1,131 +1,206 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'fs'
+import path from 'path'
 
-const fontsDir = path.join(process.cwd(), 'src', 'assets', 'fonts');
-const regularBase64 = fs.readFileSync(path.join(fontsDir, 'DejaVuSans.ttf')).toString('base64');
-const boldBase64 = fs.readFileSync(path.join(fontsDir, 'DejaVuSans-Bold.ttf')).toString('base64');
+const fontsDir = path.join(process.cwd(), 'src', 'assets', 'fonts')
 
+// Body font: DejaVu Sans (umlaut-safe, embedded for Lambda which has no system fonts)
+const dejaVuRegularBase64 = fs.readFileSync(path.join(fontsDir, 'DejaVuSans.ttf')).toString('base64')
+const dejaVuBoldBase64 = fs.readFileSync(path.join(fontsDir, 'DejaVuSans-Bold.ttf')).toString('base64')
+
+// Signature font: Dancing Script (decorative cursive for the sig block)
+const dancingMediumBase64 = fs.readFileSync(path.join(fontsDir, 'DancingScript-Medium.ttf')).toString('base64')
+const dancingBoldBase64 = fs.readFileSync(path.join(fontsDir, 'DancingScript-Bold.ttf')).toString('base64')
+
+/**
+ * Standalone print stylesheet for A4 PDF rendering.
+ * - @page margins are set here (15mm top/bottom, 20mm left/right)
+ * - Puppeteer must use margin: { top: '0', bottom: '0', left: '0', right: '0' }
+ *   to avoid double-margin. See src/lib/render/pdf.ts.
+ * - All fonts embedded as base64 — no network requests during rendering.
+ * - No Tailwind, no @apply, no external URLs.
+ */
 export const PRINT_CSS = `
-@page { size: A4; margin: 0; }
-/* Puppeteer supplies 15mm top/bottom, 20mm left/right — do NOT add margins here */
-
 @font-face {
   font-family: 'DejaVu Sans';
   font-style: normal;
   font-weight: normal;
-  src: url('data:font/truetype;base64,${regularBase64}') format('truetype');
+  src: url('data:font/truetype;base64,${dejaVuRegularBase64}') format('truetype');
 }
-
 @font-face {
   font-family: 'DejaVu Sans';
   font-style: normal;
   font-weight: bold;
-  src: url('data:font/truetype;base64,${boldBase64}') format('truetype');
+  src: url('data:font/truetype;base64,${dejaVuBoldBase64}') format('truetype');
+}
+@font-face {
+  font-family: 'Dancing Script';
+  font-style: normal;
+  font-weight: 500;
+  src: url('data:font/truetype;base64,${dancingMediumBase64}') format('truetype');
+}
+@font-face {
+  font-family: 'Dancing Script';
+  font-style: normal;
+  font-weight: 700;
+  src: url('data:font/truetype;base64,${dancingBoldBase64}') format('truetype');
+}
+
+@page {
+  size: A4;
+  margin: 15mm 20mm 15mm 20mm;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 
 body {
-  font-family: 'DejaVu Sans', sans-serif;
-  font-size: 11pt;
-  line-height: 1.45;
-  color: #000;
+  font-family: 'DejaVu Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 10pt;
+  line-height: 1.4;
+  color: #333;
+  max-width: 100%;
   margin: 0;
   padding: 0;
 }
 
+/* Header with logo */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  border-bottom: 1px solid #000;
-  padding-bottom: 8pt;
-  margin-bottom: 12pt;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #2f7d29;
 }
 
-.logo { height: 60px; width: auto; }
-
-.sender-info {
-  text-align: right;
-  font-size: 9pt;
-  line-height: 1.4;
+.header .logo {
+  max-width: 160px;
+  height: auto;
+  margin-top: -12px;
 }
 
-.meta-right {
-  text-align: right;
-  margin-bottom: 16pt;
+.header .sender-info {
+  text-align: left;
+  font-size: 10pt;
+  color: #333;
+  line-height: 1.5;
 }
 
+/* Main title */
 h1 {
   font-size: 14pt;
-  font-weight: bold;
-  margin: 0 0 8pt 0;
+  color: #2f7d29;
+  margin-bottom: 15px;
+  display: none;
 }
 
 h2 {
-  font-size: 12pt;
-  font-weight: bold;
-  margin: 12pt 0 6pt 0;
+  font-size: 11pt;
+  color: #2f7d29;
+  margin-top: 18px;
+  margin-bottom: 12px;
 }
 
-p { margin: 0 0 6pt 0; }
+/* Recipient address block */
+.recipient {
+  margin: 30px 0;
+  line-height: 1.4;
+}
 
+/* Date and invoice number */
+.meta {
+  margin: 25px 0;
+}
+.meta strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Date and invoice number — right aligned */
+.meta-right {
+  text-align: right;
+  margin: 20px 0;
+}
+.meta-right div {
+  margin-bottom: 3px;
+}
+
+/* Horizontal rules */
 hr {
   border: none;
-  border-top: 1px solid #000;
-  margin: 12pt 0;
+  border-top: 1px solid #ddd;
+  margin: 20px 0;
 }
 
+/* Tables */
 table {
   width: 100%;
   border-collapse: collapse;
-  margin: 8pt 0;
+  margin: 12px 0;
 }
-
-th, td {
-  padding: 4pt 6pt;
-  border-bottom: 1px solid #ccc;
+table th,
+table td {
+  padding: 8px 10px;
   text-align: left;
-  font-size: 10pt;
+  border-bottom: 1px solid #ddd;
+}
+table th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+  color: #2f7d29;
+}
+table th:last-child,
+table td:last-child {
+  font-weight: 500;
+  width: 120px;
+  white-space: nowrap;
+  text-align: right;
 }
 
-th { font-weight: bold; border-bottom: 2px solid #000; }
+/* Bank details */
+.bank-details {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 20px 0;
+}
 
-/* Last column right-aligned (amounts) */
-th:last-child, td:last-child { text-align: right; }
-
-/* Prevent table and signatures from splitting across pages */
-table { break-inside: auto; }
-tr { break-inside: avoid; }
-
+/* Signature block */
 .signatures {
   display: flex;
-  justify-content: space-between;
-  margin-top: 25mm;
+  justify-content: space-around;
+  margin-top: 30px;
+  padding-top: 15px;
   break-inside: avoid;
 }
-
 .sig {
-  display: flex;
-  flex-direction: column;
-  min-width: 120pt;
+  text-align: center;
 }
-
 .sig .name {
-  border-top: 1px solid #000;
-  padding-top: 4pt;
-  font-weight: bold;
+  display: block;
+  font-family: 'Dancing Script', cursive;
+  font-size: 18pt;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 3px;
 }
-
 .sig .role {
-  font-size: 9pt;
-  margin-top: 2pt;
+  display: block;
+  font-family: 'DejaVu Sans', 'Segoe UI', Tahoma, sans-serif;
+  font-size: 8pt;
+  color: #666;
 }
 
-em, i { font-style: italic; }
-strong, b { font-weight: bold; }
+/* Paragraphs */
+p { margin: 12px 0; }
 
+em { font-style: italic; color: #666; }
+strong { font-weight: 600; }
+
+/* Print optimizations */
 @media print {
-  body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 }
-`;
+`
