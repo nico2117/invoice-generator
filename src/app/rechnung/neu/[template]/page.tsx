@@ -1,3 +1,6 @@
+export const maxDuration = 60
+export const runtime = 'nodejs'
+
 import { notFound } from 'next/navigation'
 import { getTemplate } from '@/lib/templates/registry'
 import { assertSettingsComplete } from '@/lib/db/queries/settings'
