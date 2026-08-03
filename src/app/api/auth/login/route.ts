@@ -35,11 +35,11 @@ export async function POST(req: NextRequest) {
     timingSafeEqual(Buffer.from(password), Buffer.from(expected))
 
   if (!isValid) {
-    return NextResponse.redirect(new URL('/login?error=wrong', req.url))
+    return NextResponse.redirect(new URL('/login?error=wrong', req.url), 303)
   }
 
   const token = await createSession()
-  const response = NextResponse.redirect(new URL('/', req.url))
+  const response = NextResponse.redirect(new URL('/', req.url), 303)
   response.cookies.set('bsk_session', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',

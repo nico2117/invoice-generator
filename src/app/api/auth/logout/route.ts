@@ -6,6 +6,7 @@ export async function POST() {
       '/login',
       process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000',
     ),
+    303,
   )
   response.cookies.delete('bsk_session')
   return response
