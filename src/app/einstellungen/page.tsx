@@ -1,6 +1,7 @@
 import { getSettings, assertSettingsComplete } from '@/lib/db/queries/settings'
 import { getSignedUrl } from '@/lib/storage/blob'
-import { updateSettingsAction } from './actions'
+import { updateSettingsAction, updateCounterAction } from './actions'
+import { peekNextNumber } from '@/lib/db/queries/numbering'
 
 export const dynamic = 'force-dynamic'
 
@@ -11,6 +12,8 @@ export default async function EinstellungenPage({
 }) {
   const settings = await getSettings()
   const resolvedSearchParams = await searchParams
+  const currentYear = new Date().getFullYear()
+  const nextNum = await peekNextNumber(currentYear)
 
   let warningMessage = ''
   try {
@@ -161,6 +164,28 @@ export default async function EinstellungenPage({
           </button>
         </div>
       </form>
+
+      <section className="mt-8 border-t pt-6">
+        <h2 className="text-lg font-semibold mb-4">Rechnungsnummer</h2>
+        <p className="text-sm text-gray-600 mb-4">
+          Nächste automatisch vergebene Nummer für {currentYear}: <strong>{nextNum}</strong>
+        </p>
+        {/* @ts-ignore */}
+        <form action={updateCounterAction}>
+          <input type="hidden" name="jahr" value={currentYear} />
+          <div className="flex items-center gap-3">
+            <label className="text-sm">Neue nächste Nummer:</label>
+            <input type="number" name="nextNumber" defaultValue={nextNum} min={1}
+              className="w-24 border rounded px-2 py-1" />
+            <button type="submit" className="px-3 py-1 bg-blue-600 text-white text-sm rounded">
+              Übernehmen
+            </button>
+          </div>
+          <p className="text-xs text-gray-500 mt-2">
+            Nützlich um bestehende Nummern zu überspringen oder den Zähler zurückzusetzen.
+          </p>
+        </form>
+      </section>
     </div>
   )
 }

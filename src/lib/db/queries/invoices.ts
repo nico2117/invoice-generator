@@ -63,3 +63,8 @@ export async function listYears(): Promise<number[]> {
   const result = await db.selectDistinct({ jahr: invoices.jahr }).from(invoices).orderBy(desc(invoices.jahr))
   return result.map(r => r.jahr)
 }
+
+export async function deleteInvoice(id: string): Promise<void> {
+  const db = getDb()
+  await db.delete(invoices).where(eq(invoices.id, id))
+}

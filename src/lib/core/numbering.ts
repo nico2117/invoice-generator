@@ -1,6 +1,6 @@
 export class NumberTakenError extends Error {
   constructor(jahr: number, nummer: number) {
-    super(`Rechnungsnummer R${jahr}-${String(nummer).padStart(3,'0')} ist bereits vergeben`)
+    super(`Rechnungsnummer R${jahr}-${String(nummer).padStart(3,'0')} ist bereits vergeben. Löschen Sie die bestehende Rechnung, um die Nummer wiederzuverwenden.`)
     this.name = 'NumberTakenError'
   }
 }

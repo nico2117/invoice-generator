@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getInvoice } from '@/lib/db/queries/invoices'
+import { DeleteButton } from '../DeleteButton'
 
 function formatBetrag(value: string): string {
   return new Intl.NumberFormat('de-AT', { style: 'currency', currency: 'EUR' }).format(Number(value))
@@ -68,6 +69,10 @@ export default async function ArchivDetailPage({
         >
           Herunterladen
         </a>
+        <DeleteButton
+          invoiceId={invoice.id}
+          label={`R${invoice.jahr}-${String(invoice.rechnungsnummer).padStart(3,'0')}`}
+        />
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">

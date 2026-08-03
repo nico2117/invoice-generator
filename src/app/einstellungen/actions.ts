@@ -32,3 +32,21 @@ export async function updateSettingsAction(formData: FormData) {
   revalidatePath('/einstellungen')
   redirect('/einstellungen?success=1')
 }
+
+export async function updateCounterAction(formData: FormData) {
+  const jahr = parseInt(formData.get('jahr') as string)
+  const nextNumber = parseInt(formData.get('nextNumber') as string)
+  if (isNaN(jahr) || isNaN(nextNumber) || nextNumber < 1) {
+    return { success: false, error: 'Ungültige Nummer' }
+  }
+  const { getDb } = await import('@/lib/db/client')
+  const { sql } = await import('drizzle-orm')
+  const db = getDb()
+  await db.execute(sql`
+    INSERT INTO invoice_counters (jahr, last_number) VALUES (${jahr}, ${nextNumber - 1})
+    ON CONFLICT (jahr) DO UPDATE SET last_number = ${nextNumber - 1}
+  `)
+  const { revalidatePath } = await import('next/cache')
+  revalidatePath('/einstellungen')
+  return { success: true }
+}

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { listInvoices, listYears, countInvoices } from '@/lib/db/queries/invoices'
+import { DeleteButton } from './DeleteButton'
 
 const PAGE_SIZE = 20
 
@@ -147,6 +148,10 @@ export default async function ArchivPage({
                         >
                           Download
                         </a>
+                        <DeleteButton
+                          invoiceId={inv.id}
+                          label={formatNummer(inv.jahr, inv.rechnungsnummer)}
+                        />
                       </div>
                     </td>
                   </tr>
