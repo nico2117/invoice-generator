@@ -55,9 +55,9 @@ export function buildDocumentHtml(opts: BuildDocumentHtmlOptions): string {
     ${logoHtml}
     <div class="sender-info">
       <strong>${settings.vereinsname}</strong><br>
+      ${settings.sig1Rolle && settings.sig1Name ? 'z.H. ' + settings.sig1Rolle + ' ' + settings.sig1Name + '<br>' : ''}
       ${settings.strasse ? settings.strasse + '<br>' : ''}
-      ${settings.plz} ${settings.ort}<br>
-      ${settings.zvrZahl ? 'ZVR: ' + settings.zvrZahl : ''}
+      ${settings.plz} ${settings.ort}${settings.zvrZahl ? '<br>ZVR: ' + settings.zvrZahl : ''}
     </div>
   </div>
   ${htmlContent}

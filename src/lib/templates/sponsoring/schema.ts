@@ -18,6 +18,8 @@ export const sponsoringSchema: TemplateSchema = {
     { name: 'hausnummer', label: 'Hausnummer', type: 'text', required: true },
     { name: 'plz', label: 'PLZ', type: 'text', required: true },
     { name: 'ort', label: 'Ort', type: 'text', required: true },
+    { name: 'veranstaltung', label: 'Veranstaltung', type: 'text', required: true, defaultValue: 'Kirchbacher Kirchtag' },
+    { name: 'veranstaltungsDatum', label: 'Veranstaltungsdatum', type: 'text', required: true, defaultValue: '12.-14. September' },
     { name: 'datum', label: 'Datum', type: 'date', required: true },
     { name: 'jahr', label: 'Jahr', type: 'number', required: true },
     { name: 'rechnungsnummer', label: 'Rechnungsnummer', type: 'number', required: true },

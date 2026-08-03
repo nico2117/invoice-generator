@@ -14,7 +14,7 @@
 
 ## Sponsoring {{verein.name}}
 
-**Kirchbacher Kirchtag (12.-14. September {{jahr}})**  
+**{{veranstaltung}} ({{veranstaltungsDatum}} {{jahr}})**  
 {{leistung}}
 
 ---
